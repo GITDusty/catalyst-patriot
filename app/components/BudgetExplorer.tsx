@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 
-import { floridaBudget } from "../data/florida-budget";
+import { ProvenanceBadge } from "../../components/ProvenanceBadge";
+import type { BudgetData } from "../data/budget-types";
 import { BudgetDonut } from "./charts/BudgetDonut";
 import {
   formatCurrency,
@@ -10,22 +11,44 @@ import {
   formatPercent,
 } from "../utils/formatting";
 
-const FLORIDA_POPULATION = 22.6e6;
-
-const PAGE_BY_CATEGORY: Record<string, number> = {
-  "Health & Human Services": 112,
-  Education: 74,
-  Transportation: 168,
-  Corrections: 201,
-  Environment: 233,
-  Other: 262,
+type BudgetExplorerProps = {
+  budget: BudgetData;
+  population: number;
+  pageByCategory: Record<string, number>;
+  chartColors?: string[];
 };
 
-export const BudgetExplorer = () => {
+export const BudgetExplorer = ({
+  budget,
+  population,
+  pageByCategory,
+  chartColors,
+}: BudgetExplorerProps) => {
   const {
     meta: { fiscalYear, totalBudget, sourceLabel, sourceUrl },
     categories,
-  } = floridaBudget;
+  } = budget;
+  const sources = useMemo(
+    () =>
+      budget.sources && budget.sources.length > 0
+        ? budget.sources
+        : [
+            {
+              id: "primary-source",
+              name: sourceLabel,
+              type: "Official state budget document",
+              url: sourceUrl,
+            },
+          ],
+    [budget.sources, sourceLabel, sourceUrl]
+  );
+  const sourceIndexById = useMemo(
+    () =>
+      new Map(
+        sources.map((source, index) => [source.id, index + 1] as const)
+      ),
+    [sources]
+  );
   const sortedCategories = useMemo(
     () => [...categories].sort((a, b) => b.value - a.value),
     [categories]
@@ -44,14 +67,54 @@ export const BudgetExplorer = () => {
 
   const selectedPercent =
     totalBudget > 0 ? selectedCategory.value / totalBudget : 0;
-  const categoryCostPerCitizen = selectedCategory.value / FLORIDA_POPULATION;
-  const provenancePage = PAGE_BY_CATEGORY[selectedCategory.name] ?? 1;
-  const hasSourceLink = Boolean(sourceUrl);
+  const categoryCostPerCitizen = selectedCategory.value / population;
+  const provenancePage = pageByCategory[selectedCategory.name];
+  const primarySourceId = sources[0]?.id;
+  const selectedSourceId = selectedCategory.provenance?.sourceId ?? primarySourceId;
+  const selectedProvenance = {
+    status: selectedCategory.provenance?.status ?? "Source verified",
+    document: selectedCategory.provenance?.document ?? sourceLabel,
+    source: selectedCategory.provenance?.source ?? "Official state budget source",
+    url: selectedCategory.provenance?.url ?? sourceUrl,
+    pageRef:
+      selectedCategory.provenance?.pageRef ??
+      (provenancePage ? `p. ${provenancePage}` : undefined),
+    notes: selectedCategory.provenance?.notes,
+  } as const;
+
+  const scrollToSource = (sourceId: string | undefined) => {
+    if (!sourceId) {
+      return;
+    }
+
+    const element = document.getElementById(`source-${sourceId}`);
+    if (!element) {
+      return;
+    }
+
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const getCitationNumber = (sourceId: string | undefined) =>
+    sourceId ? sourceIndexById.get(sourceId) ?? "?" : "?";
+
+  const renderCitationMarker = (sourceId: string | undefined) => (
+    <sup className="ml-0.5">
+      <button
+        type="button"
+        onClick={() => scrollToSource(sourceId)}
+        className="cursor-pointer text-xs text-cyan-400 transition hover:underline"
+        aria-label={`Jump to source ${getCitationNumber(sourceId)}`}
+      >
+        [{getCitationNumber(sourceId)}]
+      </button>
+    </sup>
+  );
 
   return (
     <section className="section-shell pt-8">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-        <aside className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 lg:col-span-2">
+        <aside className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-md lg:col-span-2">
           <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
             Category List
           </p>
@@ -93,7 +156,7 @@ export const BudgetExplorer = () => {
         </aside>
 
         <div className="min-w-0 space-y-6 lg:col-span-3">
-          <div className="min-w-0 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6">
+          <div className="min-w-0 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
             <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-gray-500">
               <span>{fiscalYear} Budget Mix</span>
               <span>Click slice or category</span>
@@ -102,6 +165,7 @@ export const BudgetExplorer = () => {
               data={sortedCategories}
               total={totalBudget}
               tableId="budget-category-summary"
+              colors={chartColors}
               activeCategory={selectedCategory.name}
               centerLabel={selectedCategory.name}
               centerValue={formatCurrency(selectedCategory.value)}
@@ -111,7 +175,7 @@ export const BudgetExplorer = () => {
             />
           </div>
 
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 transition-all duration-300">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition-all duration-300">
             <p className="text-xs uppercase tracking-[0.18em] text-cyan-400">
               Selected Category
             </p>
@@ -125,6 +189,7 @@ export const BudgetExplorer = () => {
                 </p>
                 <p className="mt-1 text-lg font-semibold text-white">
                   {formatCurrency(selectedCategory.value)}
+                  {renderCitationMarker(selectedSourceId)}
                 </p>
               </div>
               <div className="rounded-lg border border-white/10 bg-slate-950/30 p-3">
@@ -141,41 +206,21 @@ export const BudgetExplorer = () => {
                 </p>
                 <p className="mt-1 text-lg font-semibold text-white">
                   {formatCurrencyWhole(categoryCostPerCitizen)}
+                  {renderCitationMarker(selectedSourceId)}
                 </p>
               </div>
             </div>
 
-            <div className="mt-5 rounded-lg border border-white/10 bg-slate-950/35 p-4">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-white">Provenance</p>
-                <span className="rounded-full border border-cyan-500/40 bg-cyan-500/10 px-2 py-1 text-xs font-medium text-cyan-300">
-                  Source verified
-                </span>
-              </div>
-              <dl className="space-y-2 text-sm">
-                <div className="flex items-center justify-between gap-3">
-                  <dt className="text-gray-500">Source document</dt>
-                  <dd className="text-right text-gray-200">{sourceLabel}</dd>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <dt className="text-gray-500">PDF page</dt>
-                  <dd className="text-gray-200">{provenancePage}</dd>
-                </div>
-              </dl>
-              {hasSourceLink ? (
-                <a
-                  href={sourceUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex text-sm font-medium text-cyan-400 transition hover:text-cyan-300"
-                >
-                  Open verified source
-                </a>
-              ) : (
-                <span className="mt-4 inline-flex text-sm text-gray-500">
-                  Open verified source (link pending)
-                </span>
-              )}
+            <div className="mt-5">
+              <p className="mb-2 text-sm font-semibold text-white">Provenance</p>
+              <ProvenanceBadge
+                status={selectedProvenance.status}
+                document={selectedProvenance.document}
+                source={selectedProvenance.source}
+                url={selectedProvenance.url}
+                pageRef={selectedProvenance.pageRef}
+                notes={selectedProvenance.notes}
+              />
             </div>
           </div>
         </div>
@@ -187,6 +232,7 @@ export const BudgetExplorer = () => {
       >
         <p>
           Total Budget: <span className="font-semibold text-white">{formatCurrency(totalBudget)}</span>
+          {renderCitationMarker(primarySourceId)}
         </p>
         <p>
           Categories Tracked: <span className="font-semibold text-white">{sortedCategories.length}</span>
@@ -194,13 +240,53 @@ export const BudgetExplorer = () => {
         <p>
           Cost Per Citizen:{" "}
           <span className="font-semibold text-white">
-            {formatCurrencyWhole(totalBudget / FLORIDA_POPULATION)}
+            {formatCurrencyWhole(totalBudget / population)}
           </span>
+          {renderCitationMarker(primarySourceId)}
         </p>
         <p>
           Data Sources: <span className="font-semibold text-cyan-300">Verified ✓</span>
         </p>
       </div>
+
+      <section className="mt-6 border-t border-white/10 px-8 py-8">
+        <h3 className="mb-4 text-lg font-bold text-white">Sources & Methodology</h3>
+        <p className="mb-4 text-sm text-gray-400">
+          All budget figures are sourced from official government documents and
+          verified against independent nonpartisan analyses. Click any category
+          above to see its specific source citation.
+        </p>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {sources.map((source) => {
+            if (source.url) {
+              return (
+                <a
+                  key={source.id}
+                  id={`source-${source.id}`}
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+                >
+                  <p className="text-sm font-medium text-white">{source.name}</p>
+                  <p className="mt-1 text-xs text-gray-500">{source.type}</p>
+                </a>
+              );
+            }
+
+            return (
+              <div
+                key={source.id}
+                id={`source-${source.id}`}
+                className="rounded-lg border border-white/10 bg-white/5 p-4"
+              >
+                <p className="text-sm font-medium text-white">{source.name}</p>
+                <p className="mt-1 text-xs text-gray-500">{source.type}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
     </section>
   );
 };

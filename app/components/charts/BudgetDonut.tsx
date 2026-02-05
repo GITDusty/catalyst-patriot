@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import type { BudgetCategory } from "../../data/budget-types";
 import { formatCurrency, formatPercent } from "../../utils/formatting";
 
-const CHART_COLORS = [
+const DEFAULT_CHART_COLORS = [
   "var(--chart-1, #1e293b)",
   "var(--chart-2, #dc2626)",
   "var(--chart-3, #94a3b8)",
@@ -20,6 +19,7 @@ type BudgetDonutProps = {
   total: number;
   onSelectCategory: (category: BudgetCategory) => void;
   tableId: string;
+  colors?: string[];
   activeCategory?: string;
   centerLabel?: string;
   centerValue?: string;
@@ -63,16 +63,11 @@ export const BudgetDonut = ({
   total,
   onSelectCategory,
   tableId,
+  colors = DEFAULT_CHART_COLORS,
   activeCategory,
   centerLabel,
   centerValue,
 }: BudgetDonutProps) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const activeIndex = activeCategory
     ? data.findIndex((item) => item.name === activeCategory)
     : -1;
@@ -85,46 +80,42 @@ export const BudgetDonut = ({
       role="img"
     >
       <div className="relative h-[350px] w-full min-w-0">
-        {isMounted ? (
-          <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={320}>
-            <PieChart>
-              <Pie
-                data={data}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                innerRadius={90}
-                outerRadius={140}
-                paddingAngle={2}
-                stroke="none"
-                onClick={(entry) => {
-                  const payload = (entry as { payload?: BudgetCategory }).payload;
-                  if (payload) {
-                    onSelectCategory(payload);
-                  }
-                }}
-              >
-                {data.map((item, index) => {
-                  const isMuted =
-                    activeIndex >= 0 && index !== activeIndex && activeCategory;
+        <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={320}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              innerRadius={90}
+              outerRadius={140}
+              paddingAngle={2}
+              stroke="none"
+              onClick={(entry) => {
+                const payload = (entry as { payload?: BudgetCategory }).payload;
+                if (payload) {
+                  onSelectCategory(payload);
+                }
+              }}
+            >
+              {data.map((item, index) => {
+                const isMuted =
+                  activeIndex >= 0 && index !== activeIndex && activeCategory;
 
-                  return (
-                    <Cell
-                      key={`${item.name}-${index}`}
-                      fill={CHART_COLORS[index % CHART_COLORS.length]}
-                      opacity={isMuted ? 0.35 : 1}
-                      stroke="none"
-                    />
-                  );
-                })}
-              </Pie>
-              <Tooltip trigger="click" content={<DonutTooltip total={total} />} />
-            </PieChart>
-          </ResponsiveContainer>
-        ) : (
-          <div className="h-full w-full animate-pulse rounded-xl bg-slate-900/30" />
-        )}
+                return (
+                  <Cell
+                    key={`${item.name}-${index}`}
+                    fill={colors[index % colors.length]}
+                    opacity={isMuted ? 0.35 : 1}
+                    stroke="none"
+                  />
+                );
+              })}
+            </Pie>
+            <Tooltip trigger="click" content={<DonutTooltip total={total} />} />
+          </PieChart>
+        </ResponsiveContainer>
         {centerLabel && centerValue ? (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div className="max-w-[11rem] text-center">

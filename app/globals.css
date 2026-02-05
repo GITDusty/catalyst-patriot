@@ -1,18 +1,21 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #070b16;
   --foreground: #e2e8f0;
   --surface: #111827;
   --surface-muted: #1f2937;
-  --accent: #22d3ee;
-  --accent-strong: #38bdf8;
-  --chart-1: #22d3ee;
-  --chart-2: #3b82f6;
-  --chart-3: #14b8a6;
-  --chart-4: #0ea5e9;
-  --chart-5: #818cf8;
-  --chart-6: #2dd4bf;
+  --accent: #1e293b;
+  --accent-strong: #dc2626;
+  --chart-1: #1e293b;
+  --chart-2: #dc2626;
+  --chart-3: #94a3b8;
+  --chart-4: #475569;
+  --chart-5: #f59e0b;
+  --chart-6: #6366f1;
 }
 
 @theme inline {
