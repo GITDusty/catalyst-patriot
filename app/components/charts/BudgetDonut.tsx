@@ -20,6 +20,8 @@ type BudgetDonutProps = {
   onSelectCategory: (category: BudgetCategory) => void;
   tableId: string;
   activeCategory?: string;
+  centerLabel?: string;
+  centerValue?: string;
 };
 
 type DonutTooltipProps = {
@@ -43,11 +45,11 @@ const DonutTooltip = ({ active, payload, total }: DonutTooltipProps) => {
   const percent = total > 0 ? value / total : 0;
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-xs shadow-lg">
-      <div className="text-sm font-semibold text-slate-900">
+    <div className="rounded-lg border border-white/10 bg-slate-950/90 px-3 py-2 text-xs shadow-lg backdrop-blur">
+      <div className="text-sm font-semibold text-white">
         {item?.name ?? entry.name}
       </div>
-      <div className="mt-1 flex flex-col gap-1 text-slate-600">
+      <div className="mt-1 flex flex-col gap-1 text-gray-300">
         <span>{formatCurrency(value)}</span>
         <span>{formatPercent(percent)} of total</span>
       </div>
@@ -61,6 +63,8 @@ export const BudgetDonut = ({
   onSelectCategory,
   tableId,
   activeCategory,
+  centerLabel,
+  centerValue,
 }: BudgetDonutProps) => {
   const activeIndex = activeCategory
     ? data.findIndex((item) => item.name === activeCategory)
@@ -73,7 +77,7 @@ export const BudgetDonut = ({
       aria-label="Budget category breakdown"
       role="img"
     >
-      <div className="h-72 w-full sm:h-80 md:h-96">
+      <div className="relative h-72 w-full sm:h-80 md:h-96">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -108,6 +112,18 @@ export const BudgetDonut = ({
             <Tooltip trigger="click" content={<DonutTooltip total={total} />} />
           </PieChart>
         </ResponsiveContainer>
+        {centerLabel && centerValue ? (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div className="max-w-[11rem] text-center">
+              <p className="text-xs uppercase tracking-[0.16em] text-gray-400">
+                {centerLabel}
+              </p>
+              <p className="mt-2 text-xl font-semibold text-white sm:text-2xl">
+                {centerValue}
+              </p>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

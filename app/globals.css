@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f7f3;
-  --foreground: #0f172a;
-  --surface: #ffffff;
-  --surface-muted: #f1f5f9;
-  --accent: #1e3a8a;
-  --accent-strong: #b91c1c;
-  --chart-1: #1e3a8a;
-  --chart-2: #2563eb;
-  --chart-3: #b91c1c;
-  --chart-4: #0f766e;
-  --chart-5: #b45309;
-  --chart-6: #475569;
+  --background: #070b16;
+  --foreground: #e2e8f0;
+  --surface: #111827;
+  --surface-muted: #1f2937;
+  --accent: #22d3ee;
+  --accent-strong: #38bdf8;
+  --chart-1: #22d3ee;
+  --chart-2: #3b82f6;
+  --chart-3: #14b8a6;
+  --chart-4: #0ea5e9;
+  --chart-5: #818cf8;
+  --chart-6: #2dd4bf;
 }
 
 @theme inline {
@@ -22,25 +22,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b1120;
-    --foreground: #e2e8f0;
-    --surface: #111827;
-    --surface-muted: #1f2937;
-    --accent: #60a5fa;
-    --accent-strong: #f87171;
-    --chart-1: #60a5fa;
-    --chart-2: #38bdf8;
-    --chart-3: #f87171;
-    --chart-4: #2dd4bf;
-    --chart-5: #f59e0b;
-    --chart-6: #cbd5f5;
-  }
-}
-
 body {
-  background: radial-gradient(circle at top, #ffffff 0%, var(--background) 45%);
+  background:
+    radial-gradient(circle at 15% -10%, #1f3a8a55 0%, transparent 35%),
+    radial-gradient(circle at 85% 0%, #06b6d433 0%, transparent 30%),
+    linear-gradient(160deg, #060913 0%, #0b152a 52%, #1f2f45 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans);
   min-height: 100vh;
@@ -53,17 +39,18 @@ body {
 .section-shell {
   margin: 0 auto;
   width: min(100% - 2rem, 72rem);
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .meta-card {
   display: grid;
   gap: 1.25rem;
-  border-radius: 1.5rem;
-  border: 1px solid #e2e8f0;
-  background: var(--surface);
+  border-radius: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.05);
+  backdrop-filter: blur(12px);
   padding: 1.5rem;
-  box-shadow: 0 20px 45px -40px rgba(15, 23, 42, 0.45);
+  box-shadow: 0 20px 45px -40px rgba(7, 11, 22, 0.7);
 }
 
 .eyebrow {
@@ -74,5 +61,5 @@ body {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #64748b;
+  color: #94a3b8;
 }

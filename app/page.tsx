@@ -3,62 +3,48 @@ import { floridaBudget } from "./data/florida-budget";
 import { formatCurrency } from "./utils/formatting";
 
 export default function Home() {
-  const { meta } = floridaBudget;
+  const {
+    meta: { fiscalYear, totalBudget },
+    categories,
+  } = floridaBudget;
 
   return (
     <main className="page-shell">
-      <section className="section-shell">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <p className="eyebrow">Florida FY 2024-25 Budget</p>
-            <h1 className="mt-4 text-4xl font-semibold text-slate-900 sm:text-5xl">
-              See how Florida allocates every dollar.
+      <section className="section-shell pb-4 pt-10">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <p className="eyebrow">Florida state budget intelligence</p>
+            <h1 className="mt-3 text-4xl font-semibold text-white sm:text-5xl">
+              Make {formatCurrency(totalBudget)} feel massive yet manageable.
             </h1>
-            <p className="mt-4 text-lg text-slate-600">
-              Explore the state budget by category, compare major priorities,
-              and tap any slice to drill into subcategory details.
+            <p className="mt-3 text-lg text-gray-300">
+              Source-verified intelligence for FY 2024-25 spending categories,
+              built to explain where every major dollar goes.
             </p>
           </div>
 
-          <div className="meta-card">
+          <div className="meta-card max-w-sm">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Fiscal year
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-400">
+                Fiscal Year
               </p>
-              <p className="mt-2 text-lg font-semibold text-slate-900">
-                {meta.fiscalYear}
+              <p className="mt-2 text-lg font-semibold text-white">
+                {fiscalYear}
               </p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Total budget
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-400">
+                Summary
               </p>
-              <p className="mt-2 text-lg font-semibold text-slate-900">
-                {formatCurrency(meta.totalBudget)}
+              <p className="mt-2 text-lg font-semibold text-white">
+                {formatCurrency(totalBudget)}, {categories.length} categories tracked
               </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Data source
-              </p>
-              <p className="mt-2 text-sm text-slate-600">{meta.sourceLabel}</p>
             </div>
           </div>
         </div>
       </section>
 
       <BudgetExplorer />
-
-      <section className="section-shell">
-        <div className="rounded-3xl border border-slate-200 bg-white/80 p-6 text-sm text-slate-600">
-          <p className="font-semibold text-slate-800">Attribution</p>
-          <p className="mt-2">
-            Budget figures reflect the Florida FY 2024-25 enacted plan. Data is
-            provided as a public summary for civic education and will be
-            updated with a verified source link.
-          </p>
-        </div>
-      </section>
     </main>
   );
 }
