@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f7f3;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-muted: #f1f5f9;
+  --accent: #1e3a8a;
+  --accent-strong: #b91c1c;
+  --chart-1: #1e3a8a;
+  --chart-2: #2563eb;
+  --chart-3: #b91c1c;
+  --chart-4: #0f766e;
+  --chart-5: #b45309;
+  --chart-6: #475569;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b1120;
+    --foreground: #e2e8f0;
+    --surface: #111827;
+    --surface-muted: #1f2937;
+    --accent: #60a5fa;
+    --accent-strong: #f87171;
+    --chart-1: #60a5fa;
+    --chart-2: #38bdf8;
+    --chart-3: #f87171;
+    --chart-4: #2dd4bf;
+    --chart-5: #f59e0b;
+    --chart-6: #cbd5f5;
+  }
+}
+
+body {
+  background: radial-gradient(circle at top, #ffffff 0%, var(--background) 45%);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans);
+  min-height: 100vh;
+}
+
+.page-shell {
+  min-height: 100vh;
+}
+
+.section-shell {
+  margin: 0 auto;
+  width: min(100% - 2rem, 72rem);
+  padding: 3rem 0;
+}
+
+.meta-card {
+  display: grid;
+  gap: 1.25rem;
+  border-radius: 1.5rem;
+  border: 1px solid #e2e8f0;
+  background: var(--surface);
+  padding: 1.5rem;
+  box-shadow: 0 20px 45px -40px rgba(15, 23, 42, 0.45);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #64748b;
+}
