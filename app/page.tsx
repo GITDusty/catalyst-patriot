@@ -1,4 +1,5 @@
 import { BudgetExplorer } from "./components/BudgetExplorer";
+import { SourceIndicator } from "./components/SourceIndicator";
 import { floridaBudget } from "./data/florida-budget";
 import { formatCurrency } from "./utils/formatting";
 
@@ -34,7 +35,15 @@ export default function Home() {
                 Total budget
               </p>
               <p className="mt-2 text-lg font-semibold text-slate-900">
-                {formatCurrency(meta.totalBudget)}
+                <span className="inline-flex items-center">
+                  {formatCurrency(meta.totalBudget)}
+                  {meta.source ? (
+                    <SourceIndicator
+                      sourceUrl={meta.source.url}
+                      description={meta.source.description}
+                    />
+                  ) : null}
+                </span>
               </p>
             </div>
             <div>

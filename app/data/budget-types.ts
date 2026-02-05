@@ -3,6 +3,7 @@ export type BudgetCategory = {
   value: number;
   children?: BudgetCategory[];
   description?: string;
+  source?: SourceMeta;
 };
 
 export type BudgetMeta = {
@@ -10,6 +11,12 @@ export type BudgetMeta = {
   totalBudget: number;
   sourceLabel: string;
   sourceUrl?: string;
+  source?: SourceMeta;
+};
+
+export type SourceMeta = {
+  url: string;
+  description: string;
 };
 
 export type BudgetData = {

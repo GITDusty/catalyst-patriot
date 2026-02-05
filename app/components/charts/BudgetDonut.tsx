@@ -3,6 +3,7 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import type { BudgetCategory } from "../../data/budget-types";
+import { SourceIndicator } from "../SourceIndicator";
 import { formatCurrency, formatPercent } from "../../utils/formatting";
 
 const CHART_COLORS = [
@@ -41,6 +42,7 @@ const DonutTooltip = ({ active, payload, total }: DonutTooltipProps) => {
   const item = entry.payload as BudgetCategory | undefined;
   const value = typeof entry.value === "number" ? entry.value : item?.value ?? 0;
   const percent = total > 0 ? value / total : 0;
+  const source = item?.source;
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-xs shadow-lg">
@@ -48,8 +50,24 @@ const DonutTooltip = ({ active, payload, total }: DonutTooltipProps) => {
         {item?.name ?? entry.name}
       </div>
       <div className="mt-1 flex flex-col gap-1 text-slate-600">
-        <span>{formatCurrency(value)}</span>
-        <span>{formatPercent(percent)} of total</span>
+        <span className="inline-flex items-center">
+          {formatCurrency(value)}
+          {source ? (
+            <SourceIndicator
+              sourceUrl={source.url}
+              description={source.description}
+            />
+          ) : null}
+        </span>
+        <span className="inline-flex items-center">
+          {formatPercent(percent)} of total
+          {source ? (
+            <SourceIndicator
+              sourceUrl={source.url}
+              description={source.description}
+            />
+          ) : null}
+        </span>
       </div>
     </div>
   );

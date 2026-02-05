@@ -7,6 +7,7 @@ import { floridaBudget } from "../data/florida-budget";
 import { BudgetDonut } from "./charts/BudgetDonut";
 import { CategoryDialog } from "./modals/CategoryDialog";
 import { CategoryTable } from "./tables/CategoryTable";
+import { SourceIndicator } from "./SourceIndicator";
 import { formatCurrency } from "../utils/formatting";
 
 export const BudgetExplorer = () => {
@@ -15,7 +16,7 @@ export const BudgetExplorer = () => {
     null
   );
   const {
-    meta: { fiscalYear, totalBudget },
+    meta: { fiscalYear, totalBudget, source },
     categories,
   } = floridaBudget;
 
@@ -31,8 +32,14 @@ export const BudgetExplorer = () => {
               <h2 className="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">
                 State spending by category
               </h2>
-              <p className="mt-2 text-sm text-slate-600">
+              <p className="mt-2 inline-flex flex-wrap items-center gap-1 text-sm text-slate-600">
                 Total adopted budget: {formatCurrency(totalBudget)}
+                {source ? (
+                  <SourceIndicator
+                    sourceUrl={source.url}
+                    description={source.description}
+                  />
+                ) : null}
               </p>
             </div>
             <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600">

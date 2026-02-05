@@ -3,6 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 
 import type { BudgetCategory } from "../../data/budget-types";
+import { SourceIndicator } from "../SourceIndicator";
 import { formatCurrency, formatPercent } from "../../utils/formatting";
 
 type CategoryDialogProps = {
@@ -74,10 +75,26 @@ export const CategoryDialog = ({
                             {item.name}
                           </td>
                           <td className="px-4 py-3">
-                            {formatCurrency(item.value)}
+                            <span className="inline-flex items-center">
+                              {formatCurrency(item.value)}
+                              {item.source ? (
+                                <SourceIndicator
+                                  sourceUrl={item.source.url}
+                                  description={item.source.description}
+                                />
+                              ) : null}
+                            </span>
                           </td>
                           <td className="px-4 py-3">
-                            {formatPercent(percent)}
+                            <span className="inline-flex items-center">
+                              {formatPercent(percent)}
+                              {item.source ? (
+                                <SourceIndicator
+                                  sourceUrl={item.source.url}
+                                  description={item.source.description}
+                                />
+                              ) : null}
+                            </span>
                           </td>
                         </tr>
                       );
