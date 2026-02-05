@@ -50,18 +50,18 @@ export const BudgetExplorer = () => {
 
   return (
     <section className="section-shell pt-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)]">
-        <aside className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md md:p-5">
-          <p className="text-xs uppercase tracking-[0.2em] text-gray-400">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+        <aside className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 lg:col-span-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
             Category List
           </p>
-          <ul className="mt-4 space-y-2">
+          <div className="mt-4 space-y-2">
             {sortedCategories.map((category) => {
               const percent = totalBudget > 0 ? category.value / totalBudget : 0;
               const isActive = selectedCategory.name === category.name;
 
               return (
-                <li key={category.name}>
+                <div key={category.name}>
                   <button
                     type="button"
                     onClick={() => setSelectedCategoryName(category.name)}
@@ -78,24 +78,23 @@ export const BudgetExplorer = () => {
                     >
                       {category.name}
                     </p>
-                    <div className="mt-2 flex items-center justify-between gap-3 text-xs">
-                      <span className="text-gray-300">
-                        {formatCurrency(category.value)}
-                      </span>
-                      <span className={isActive ? "text-cyan-400" : "text-gray-400"}>
-                        {formatPercent(percent)}
-                      </span>
-                    </div>
+                    <p
+                      className={`mt-2 text-xs ${
+                        isActive ? "text-cyan-300" : "text-gray-300"
+                      }`}
+                    >
+                      {formatCurrency(category.value)} {"\u00b7"} {formatPercent(percent)}
+                    </p>
                   </button>
-                </li>
+                </div>
               );
             })}
-          </ul>
+          </div>
         </aside>
 
-        <div className="space-y-4">
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md md:p-6">
-            <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-gray-400">
+        <div className="min-w-0 space-y-6 lg:col-span-3">
+          <div className="min-w-0 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6">
+            <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-gray-500">
               <span>{fiscalYear} Budget Mix</span>
               <span>Click slice or category</span>
             </div>
@@ -112,16 +111,16 @@ export const BudgetExplorer = () => {
             />
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-md transition-all duration-300">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 transition-all duration-300">
             <p className="text-xs uppercase tracking-[0.18em] text-cyan-400">
               Selected Category
             </p>
-            <h3 className="mt-2 text-2xl font-semibold text-white">
+            <h3 className="mt-2 text-2xl font-bold text-white">
               {selectedCategory.name}
             </h3>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg border border-white/10 bg-slate-950/30 p-3">
-                <p className="text-xs uppercase tracking-wide text-gray-400">
+                <p className="text-xs uppercase tracking-wide text-gray-500">
                   Budget Amount
                 </p>
                 <p className="mt-1 text-lg font-semibold text-white">
@@ -129,7 +128,7 @@ export const BudgetExplorer = () => {
                 </p>
               </div>
               <div className="rounded-lg border border-white/10 bg-slate-950/30 p-3">
-                <p className="text-xs uppercase tracking-wide text-gray-400">
+                <p className="text-xs uppercase tracking-wide text-gray-500">
                   Share of Total
                 </p>
                 <p className="mt-1 text-lg font-semibold text-white">
@@ -137,7 +136,7 @@ export const BudgetExplorer = () => {
                 </p>
               </div>
               <div className="rounded-lg border border-white/10 bg-slate-950/30 p-3">
-                <p className="text-xs uppercase tracking-wide text-gray-400">
+                <p className="text-xs uppercase tracking-wide text-gray-500">
                   Cost Per Citizen
                 </p>
                 <p className="mt-1 text-lg font-semibold text-white">
@@ -155,11 +154,11 @@ export const BudgetExplorer = () => {
               </div>
               <dl className="space-y-2 text-sm">
                 <div className="flex items-center justify-between gap-3">
-                  <dt className="text-gray-400">Source document</dt>
+                  <dt className="text-gray-500">Source document</dt>
                   <dd className="text-right text-gray-200">{sourceLabel}</dd>
                 </div>
                 <div className="flex items-center justify-between gap-3">
-                  <dt className="text-gray-400">PDF page</dt>
+                  <dt className="text-gray-500">PDF page</dt>
                   <dd className="text-gray-200">{provenancePage}</dd>
                 </div>
               </dl>
