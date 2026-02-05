@@ -1,6 +1,14 @@
 "use client";
 
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { useMemo, useState } from "react";
+import {
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Sector,
+  Tooltip,
+} from "recharts";
 
 import type { BudgetCategory } from "../../data/budget-types";
 import { formatCurrency, formatPercent } from "../../utils/formatting";
@@ -43,12 +51,14 @@ const DonutTooltip = ({ active, payload, total }: DonutTooltipProps) => {
   const percent = total > 0 ? value / total : 0;
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-xs shadow-lg">
+    <div className="rounded-2xl border border-slate-200/70 bg-white/95 px-4 py-3 text-xs shadow-xl backdrop-blur">
       <div className="text-sm font-semibold text-slate-900">
         {item?.name ?? entry.name}
       </div>
       <div className="mt-1 flex flex-col gap-1 text-slate-600">
-        <span>{formatCurrency(value)}</span>
+        <span className="font-semibold text-slate-900">
+          {formatCurrency(value)}
+        </span>
         <span>{formatPercent(percent)} of total</span>
       </div>
     </div>
@@ -65,6 +75,22 @@ export const BudgetDonut = ({
   const activeIndex = activeCategory
     ? data.findIndex((item) => item.name === activeCategory)
     : -1;
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
+  const focusedItem = useMemo(() => {
+    if (hoverIndex !== null && data[hoverIndex]) {
+      return data[hoverIndex];
+    }
+    if (activeIndex >= 0) {
+      return data[activeIndex];
+    }
+    return null;
+  }, [activeIndex, data, hoverIndex]);
+
+  const centerLabel = focusedItem
+    ? focusedItem.name
+    : "Total Budget";
+  const centerValue = focusedItem ? focusedItem.value : total;
 
   return (
     <div
@@ -76,13 +102,53 @@ export const BudgetDonut = ({
       <div className="h-72 w-full min-w-0 sm:h-80 md:h-96">
         <ResponsiveContainer width="100%" height={320} minWidth={0} minHeight={0}>
           <PieChart>
+            <defs>
+              <filter id="donutGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="8" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="rgba(15,23,42,0.12)" />
+                <stop offset="60%" stopColor="rgba(15,23,42,0.05)" />
+                <stop offset="100%" stopColor="rgba(15,23,42,0)" />
+              </radialGradient>
+            </defs>
+            <circle cx="50%" cy="50%" r="35%" fill="url(#innerGlow)" />
             <Pie
               data={data}
               dataKey="value"
               nameKey="name"
-              innerRadius="55%"
+              innerRadius="58%"
               outerRadius="85%"
               paddingAngle={2}
+              activeIndex={hoverIndex ?? activeIndex}
+              activeShape={(props) => {
+                const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } =
+                  props;
+                return (
+                  <g>
+                    <Sector
+                      cx={cx}
+                      cy={cy}
+                      innerRadius={innerRadius}
+                      outerRadius={outerRadius + 6}
+                      startAngle={startAngle}
+                      endAngle={endAngle}
+                      fill={fill}
+                      filter="url(#donutGlow)"
+                    />
+                  </g>
+                );
+              }}
+              onMouseEnter={(_, index) => {
+                setHoverIndex(index);
+              }}
+              onMouseLeave={() => {
+                setHoverIndex(null);
+              }}
               onClick={(entry) => {
                 const payload = (entry as { payload?: BudgetCategory }).payload;
                 if (payload) {
@@ -105,7 +171,28 @@ export const BudgetDonut = ({
                 );
               })}
             </Pie>
-            <Tooltip trigger="click" content={<DonutTooltip total={total} />} />
+            <text
+              x="50%"
+              y="46%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="fill-slate-500 text-[10px] font-semibold uppercase tracking-[0.3em]"
+            >
+              {centerLabel}
+            </text>
+            <text
+              x="50%"
+              y="56%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="ledger fill-slate-900 text-lg font-semibold"
+            >
+              {formatCurrency(centerValue)}
+            </text>
+            <Tooltip
+              trigger="hover"
+              content={<DonutTooltip total={total} />}
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>

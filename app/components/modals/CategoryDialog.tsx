@@ -73,10 +73,10 @@ export const CategoryDialog = ({
                           <td className="px-4 py-3 font-medium text-slate-900">
                             {item.name}
                           </td>
-                          <td className="px-4 py-3">
+                          <td className="ledger px-4 py-3">
                             {formatCurrency(item.value)}
                           </td>
-                          <td className="px-4 py-3">
+                          <td className="ledger px-4 py-3">
                             {formatPercent(percent)}
                           </td>
                         </tr>
