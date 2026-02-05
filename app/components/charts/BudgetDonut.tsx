@@ -3,15 +3,16 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import type { BudgetCategory } from "../../data/budget-types";
+import { SourceIndicator } from "../SourceIndicator";
 import { formatCurrency, formatPercent } from "../../utils/formatting";
 
-const DEFAULT_CHART_COLORS = [
-  "var(--chart-1, #1e293b)",
-  "var(--chart-2, #dc2626)",
-  "var(--chart-3, #94a3b8)",
-  "var(--chart-4, #475569)",
-  "var(--chart-5, #f59e0b)",
-  "var(--chart-6, #6366f1)",
+const CHART_COLORS = [
+  "var(--chart-1, #0f766e)",
+  "var(--chart-2, #2563eb)",
+  "var(--chart-3, #f97316)",
+  "var(--chart-4, #14b8a6)",
+  "var(--chart-5, #e11d48)",
+  "var(--chart-6, #84cc16)",
 ];
 
 type BudgetDonutProps = {
@@ -19,10 +20,7 @@ type BudgetDonutProps = {
   total: number;
   onSelectCategory: (category: BudgetCategory) => void;
   tableId: string;
-  colors?: string[];
   activeCategory?: string;
-  centerLabel?: string;
-  centerValue?: string;
 };
 
 type DonutTooltipProps = {
@@ -44,15 +42,32 @@ const DonutTooltip = ({ active, payload, total }: DonutTooltipProps) => {
   const item = entry.payload as BudgetCategory | undefined;
   const value = typeof entry.value === "number" ? entry.value : item?.value ?? 0;
   const percent = total > 0 ? value / total : 0;
+  const source = item?.source;
 
   return (
-    <div className="rounded-lg border border-white/10 bg-slate-950/90 px-3 py-2 text-xs shadow-lg backdrop-blur">
-      <div className="text-sm font-semibold text-white">
+    <div className="rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-xs shadow-lg">
+      <div className="text-sm font-semibold text-slate-900">
         {item?.name ?? entry.name}
       </div>
-      <div className="mt-1 flex flex-col gap-1 text-gray-300">
-        <span>{formatCurrency(value)}</span>
-        <span>{formatPercent(percent)} of total</span>
+      <div className="mt-1 flex flex-col gap-1 text-slate-600">
+        <span className="inline-flex items-center">
+          {formatCurrency(value)}
+          {source ? (
+            <SourceIndicator
+              sourceUrl={source.url}
+              description={source.description}
+            />
+          ) : null}
+        </span>
+        <span className="inline-flex items-center">
+          {formatPercent(percent)} of total
+          {source ? (
+            <SourceIndicator
+              sourceUrl={source.url}
+              description={source.description}
+            />
+          ) : null}
+        </span>
       </div>
     </div>
   );
@@ -63,10 +78,7 @@ export const BudgetDonut = ({
   total,
   onSelectCategory,
   tableId,
-  colors = DEFAULT_CHART_COLORS,
   activeCategory,
-  centerLabel,
-  centerValue,
 }: BudgetDonutProps) => {
   const activeIndex = activeCategory
     ? data.findIndex((item) => item.name === activeCategory)
@@ -79,19 +91,16 @@ export const BudgetDonut = ({
       aria-label="Budget category breakdown"
       role="img"
     >
-      <div className="relative h-[350px] w-full min-w-0">
-        <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={320}>
+      <div className="h-72 w-full sm:h-80 md:h-96">
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
               dataKey="value"
               nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={90}
-              outerRadius={140}
+              innerRadius="55%"
+              outerRadius="85%"
               paddingAngle={2}
-              stroke="none"
               onClick={(entry) => {
                 const payload = (entry as { payload?: BudgetCategory }).payload;
                 if (payload) {
@@ -106,9 +115,10 @@ export const BudgetDonut = ({
                 return (
                   <Cell
                     key={`${item.name}-${index}`}
-                    fill={colors[index % colors.length]}
+                    fill={CHART_COLORS[index % CHART_COLORS.length]}
                     opacity={isMuted ? 0.35 : 1}
-                    stroke="none"
+                    stroke="var(--background, #ffffff)"
+                    strokeWidth={2}
                   />
                 );
               })}
@@ -116,18 +126,6 @@ export const BudgetDonut = ({
             <Tooltip trigger="click" content={<DonutTooltip total={total} />} />
           </PieChart>
         </ResponsiveContainer>
-        {centerLabel && centerValue ? (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <div className="max-w-[11rem] text-center">
-              <p className="text-xs uppercase tracking-[0.16em] text-gray-400">
-                {centerLabel}
-              </p>
-              <p className="mt-2 text-xl font-semibold text-white sm:text-2xl">
-                {centerValue}
-              </p>
-            </div>
-          </div>
-        ) : null}
       </div>
     </div>
   );

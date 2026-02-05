@@ -1,48 +1,72 @@
-import Link from "next/link";
+import { BudgetExplorer } from "./components/BudgetExplorer";
+import { SourceIndicator } from "./components/SourceIndicator";
+import { floridaBudget } from "./data/florida-budget";
+import { formatCurrency } from "./utils/formatting";
 
-import { floridaBudget } from "../lib/data/florida";
-import { illinoisBudget } from "../lib/data/illinois";
+export default function Home() {
+  const { meta } = floridaBudget;
 
-const states = [floridaBudget, illinoisBudget];
-
-export default function HomePage() {
   return (
-    <main className="page-shell min-h-screen text-white">
-      <section className="section-shell pb-2 pt-8">
-        <div className="max-w-4xl">
-          <p className="text-xs font-semibold tracking-widest text-cyan-400 uppercase">
-            State Budget Intelligence
-          </p>
-          <h1 className="mt-2 text-3xl font-bold text-white sm:text-5xl">
-            Explore where public dollars go across states.
-          </h1>
-          <p className="mt-2 text-gray-400">
-            Select a state dashboard or open the side-by-side comparison.
+    <main className="page-shell">
+      <section className="section-shell">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="eyebrow">Florida FY 2024-25 Budget</p>
+            <h1 className="mt-4 text-4xl font-semibold text-slate-900 sm:text-5xl">
+              See how Florida allocates every dollar.
+            </h1>
+            <p className="mt-4 text-lg text-slate-600">
+              Explore the state budget by category, compare major priorities,
+              and tap any slice to drill into subcategory details.
+            </p>
+          </div>
+
+          <div className="meta-card">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                Fiscal year
+              </p>
+              <p className="mt-2 text-lg font-semibold text-slate-900">
+                {meta.fiscalYear}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                Total budget
+              </p>
+              <p className="mt-2 text-lg font-semibold text-slate-900">
+                <span className="inline-flex items-center">
+                  {formatCurrency(meta.totalBudget)}
+                  {meta.source ? (
+                    <SourceIndicator
+                      sourceUrl={meta.source.url}
+                      description={meta.source.description}
+                    />
+                  ) : null}
+                </span>
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                Data source
+              </p>
+              <p className="mt-2 text-sm text-slate-600">{meta.sourceLabel}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <BudgetExplorer />
+
+      <section className="section-shell">
+        <div className="rounded-3xl border border-slate-200 bg-white/80 p-6 text-sm text-slate-600">
+          <p className="font-semibold text-slate-800">Attribution</p>
+          <p className="mt-2">
+            Budget figures reflect the Florida FY 2024-25 enacted plan. Data is
+            provided as a public summary for civic education and will be
+            updated with a verified source link.
           </p>
         </div>
-
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {states.map((state) => (
-            <Link
-              key={state.abbreviation}
-              href={`/${state.state.toLowerCase()}`}
-              className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition hover:border-cyan-500/40"
-            >
-              <p className="text-xs uppercase tracking-[0.2em] text-cyan-400">{state.fiscalYear}</p>
-              <h2 className="mt-2 text-2xl font-bold text-white">{state.state}</h2>
-              <p className="mt-3 text-sm text-gray-300">Total Budget: {state.displayTotal}</p>
-              <p className="text-sm text-gray-300">Population: {state.population.toLocaleString()}</p>
-              <p className="text-sm text-gray-300">Cost per citizen: {state.displayCostPerCitizen}</p>
-            </Link>
-          ))}
-        </div>
-
-        <Link
-          href="/compare"
-          className="mt-6 inline-flex rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-500/20"
-        >
-          Open Florida vs Illinois comparison
-        </Link>
       </section>
     </main>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import type { BudgetCategory } from "../../data/budget-types";
+import { SourceIndicator } from "../SourceIndicator";
 import { formatCurrency, formatPercent } from "../../utils/formatting";
 
 type CategoryTableProps = {
@@ -45,8 +46,28 @@ export const CategoryTable = ({
             <td className="px-3 py-2 font-medium text-slate-900">
               {item.name}
             </td>
-            <td className="ledger px-3 py-2">{formatCurrency(item.value)}</td>
-            <td className="ledger px-3 py-2">{formatPercent(percent)}</td>
+            <td className="px-3 py-2">
+              <span className="inline-flex items-center">
+                {formatCurrency(item.value)}
+                {item.source ? (
+                  <SourceIndicator
+                    sourceUrl={item.source.url}
+                    description={item.source.description}
+                  />
+                ) : null}
+              </span>
+            </td>
+            <td className="px-3 py-2">
+              <span className="inline-flex items-center">
+                {formatPercent(percent)}
+                {item.source ? (
+                  <SourceIndicator
+                    sourceUrl={item.source.url}
+                    description={item.source.description}
+                  />
+                ) : null}
+              </span>
+            </td>
           </tr>
         );
       })}

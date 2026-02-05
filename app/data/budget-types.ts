@@ -3,15 +3,7 @@ export type BudgetCategory = {
   value: number;
   children?: BudgetCategory[];
   description?: string;
-  provenance?: {
-    sourceId: string;
-    status: "Source verified" | "Estimated" | "Pending verification";
-    document: string;
-    source: string;
-    url?: string;
-    pageRef?: string;
-    notes?: string;
-  };
+  source?: SourceMeta;
 };
 
 export type BudgetMeta = {
@@ -19,15 +11,15 @@ export type BudgetMeta = {
   totalBudget: number;
   sourceLabel: string;
   sourceUrl?: string;
+  source?: SourceMeta;
+};
+
+export type SourceMeta = {
+  url: string;
+  description: string;
 };
 
 export type BudgetData = {
   meta: BudgetMeta;
   categories: BudgetCategory[];
-  sources?: {
-    id: string;
-    name: string;
-    type: string;
-    url?: string;
-  }[];
 };
