@@ -13,8 +13,8 @@ export const floridaBudget: BudgetData = {
       description: "Healthcare programs, public health, and family services.",
       source: {
         label: "General Appropriations Act (TBD)",
-        href: "#",
-        page: "PDF p. 42",
+        href: "https://example.com/florida-budget.pdf",
+        page: "42",
       },
       children: [
         { name: "Medicaid", value: 26.0e9 },
@@ -30,8 +30,8 @@ export const floridaBudget: BudgetData = {
       description: "K-12, higher education, and workforce development.",
       source: {
         label: "Education Appropriations (TBD)",
-        href: "#",
-        page: "PDF p. 88",
+        href: "https://example.com/florida-budget.pdf",
+        page: "88",
       },
       children: [
         { name: "K-12 Education", value: 18.2e9 },
@@ -47,8 +47,8 @@ export const floridaBudget: BudgetData = {
       description: "Statewide mobility, transit, and infrastructure.",
       source: {
         label: "Transportation Program (TBD)",
-        href: "#",
-        page: "PDF p. 137",
+        href: "https://example.com/florida-budget.pdf",
+        page: "137",
       },
       children: [
         { name: "Highway Maintenance", value: 6.4e9 },
@@ -64,8 +64,8 @@ export const floridaBudget: BudgetData = {
       description: "State prisons, probation, and rehabilitation.",
       source: {
         label: "Corrections Budget (TBD)",
-        href: "#",
-        page: "PDF p. 214",
+        href: "https://example.com/florida-budget.pdf",
+        page: "214",
       },
       children: [
         { name: "State Prisons", value: 4.6e9 },
@@ -80,8 +80,8 @@ export const floridaBudget: BudgetData = {
       description: "Water resources, conservation, and resiliency.",
       source: {
         label: "Environment Budget (TBD)",
-        href: "#",
-        page: "PDF p. 302",
+        href: "https://example.com/florida-budget.pdf",
+        page: "302",
       },
       children: [
         { name: "Water Resources", value: 1.3e9 },
@@ -97,8 +97,8 @@ export const floridaBudget: BudgetData = {
       description: "General government, safety, and reserves.",
       source: {
         label: "General Government (TBD)",
-        href: "#",
-        page: "PDF p. 356",
+        href: "https://example.com/florida-budget.pdf",
+        page: "356",
       },
       children: [
         { name: "General Government", value: 4.2e9 },
@@ -111,3 +111,5 @@ export const floridaBudget: BudgetData = {
     },
   ],
 };
+
+export const floridaBudgetData = floridaBudget;
