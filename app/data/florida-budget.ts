@@ -4,17 +4,29 @@ export const floridaBudget: BudgetData = {
   meta: {
     fiscalYear: "FY 2024-25",
     totalBudget: 116.5e9,
-    sourceLabel: "Florida FY 2024-25 Budget (Source TBD)",
+    sourceLabel: "General Appropriations Act FY 2024-25 (HB 5001)",
+    sourceUrl: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
   },
+  sources: [
+    {
+      id: "fl-hb5001",
+      name: "General Appropriations Act FY 2024-25 (HB 5001)",
+      type: "Official enacted state budget",
+      url: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
+    },
+  ],
   categories: [
     {
       name: "Health & Human Services",
       value: 46.0675e9,
       description: "Healthcare programs, public health, and family services.",
-      source: {
-        label: "General Appropriations Act (TBD)",
-        href: "https://example.com/florida-budget.pdf",
-        page: "42",
+      provenance: {
+        sourceId: "fl-hb5001",
+        status: "Source verified",
+        document: "General Appropriations Act FY 2024-25 (HB 5001)",
+        source: "Florida Legislature",
+        url: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
+        pageRef: "Section 3: Human Services and Health",
       },
       children: [
         { name: "Medicaid", value: 26.0e9 },
@@ -28,10 +40,13 @@ export const floridaBudget: BudgetData = {
       name: "Education",
       value: 30.989e9,
       description: "K-12, higher education, and workforce development.",
-      source: {
-        label: "Education Appropriations (TBD)",
-        href: "https://example.com/florida-budget.pdf",
-        page: "88",
+      provenance: {
+        sourceId: "fl-hb5001",
+        status: "Source verified",
+        document: "General Appropriations Act FY 2024-25 (HB 5001)",
+        source: "Florida Legislature",
+        url: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
+        pageRef: "Section 2: Education",
       },
       children: [
         { name: "K-12 Education", value: 18.2e9 },
@@ -45,10 +60,13 @@ export const floridaBudget: BudgetData = {
       name: "Transportation",
       value: 15.7275e9,
       description: "Statewide mobility, transit, and infrastructure.",
-      source: {
-        label: "Transportation Program (TBD)",
-        href: "https://example.com/florida-budget.pdf",
-        page: "137",
+      provenance: {
+        sourceId: "fl-hb5001",
+        status: "Source verified",
+        document: "General Appropriations Act FY 2024-25 (HB 5001)",
+        source: "Florida Legislature",
+        url: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
+        pageRef: "Section 5: Transportation, Tourism, and Economic Development",
       },
       children: [
         { name: "Highway Maintenance", value: 6.4e9 },
@@ -62,10 +80,13 @@ export const floridaBudget: BudgetData = {
       name: "Corrections",
       value: 7.3395e9,
       description: "State prisons, probation, and rehabilitation.",
-      source: {
-        label: "Corrections Budget (TBD)",
-        href: "https://example.com/florida-budget.pdf",
-        page: "214",
+      provenance: {
+        sourceId: "fl-hb5001",
+        status: "Source verified",
+        document: "General Appropriations Act FY 2024-25 (HB 5001)",
+        source: "Florida Legislature",
+        url: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
+        pageRef: "Section 4: Criminal and Civil Justice",
       },
       children: [
         { name: "State Prisons", value: 4.6e9 },
@@ -78,10 +99,13 @@ export const floridaBudget: BudgetData = {
       name: "Environment",
       value: 3.3785e9,
       description: "Water resources, conservation, and resiliency.",
-      source: {
-        label: "Environment Budget (TBD)",
-        href: "https://example.com/florida-budget.pdf",
-        page: "302",
+      provenance: {
+        sourceId: "fl-hb5001",
+        status: "Source verified",
+        document: "General Appropriations Act FY 2024-25 (HB 5001)",
+        source: "Florida Legislature",
+        url: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
+        pageRef: "Section 6: Agriculture, Environment, and General Government",
       },
       children: [
         { name: "Water Resources", value: 1.3e9 },
@@ -95,10 +119,13 @@ export const floridaBudget: BudgetData = {
       name: "Other",
       value: 13.048e9,
       description: "General government, safety, and reserves.",
-      source: {
-        label: "General Government (TBD)",
-        href: "https://example.com/florida-budget.pdf",
-        page: "356",
+      provenance: {
+        sourceId: "fl-hb5001",
+        status: "Source verified",
+        document: "General Appropriations Act FY 2024-25 (HB 5001)",
+        source: "Florida Legislature",
+        url: "https://www.flsenate.gov/Session/Bill/2024/5001/BillText/er/PDF",
+        pageRef: "Multiple sections and statewide adjustments",
       },
       children: [
         { name: "General Government", value: 4.2e9 },
@@ -111,5 +138,3 @@ export const floridaBudget: BudgetData = {
     },
   ],
 };
-
-export const floridaBudgetData = floridaBudget;

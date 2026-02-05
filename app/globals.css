@@ -1,18 +1,21 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --surface: rgba(255, 255, 255, 0.72);
-  --surface-muted: rgba(248, 250, 252, 0.9);
-  --accent: #0f172a;
-  --accent-strong: #991b1b;
-  --chart-1: #0f172a;
-  --chart-2: #1e293b;
-  --chart-3: #991b1b;
-  --chart-4: #334155;
-  --chart-5: #0f766e;
-  --chart-6: #1f2937;
+  --background: #070b16;
+  --foreground: #e2e8f0;
+  --surface: #111827;
+  --surface-muted: #1f2937;
+  --accent: #1e293b;
+  --accent-strong: #dc2626;
+  --chart-1: #1e293b;
+  --chart-2: #dc2626;
+  --chart-3: #94a3b8;
+  --chart-4: #475569;
+  --chart-5: #f59e0b;
+  --chart-6: #6366f1;
 }
 
 @theme inline {
@@ -22,30 +25,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b1120;
-    --foreground: #f8fafc;
-    --surface: rgba(15, 23, 42, 0.7);
-    --surface-muted: rgba(30, 41, 59, 0.9);
-    --accent: #f8fafc;
-    --accent-strong: #ef4444;
-    --chart-1: #f8fafc;
-    --chart-2: #cbd5f5;
-    --chart-3: #ef4444;
-    --chart-4: #94a3b8;
-    --chart-5: #22d3ee;
-    --chart-6: #e2e8f0;
-  }
-}
-
 body {
   background:
-    radial-gradient(circle at 15% 10%, rgba(59, 130, 246, 0.12), transparent 45%),
-    radial-gradient(circle at 85% 5%, rgba(16, 185, 129, 0.12), transparent 40%),
-    linear-gradient(180deg, #ffffff 0%, var(--background) 55%);
+    radial-gradient(circle at 15% -10%, #1f3a8a55 0%, transparent 35%),
+    radial-gradient(circle at 85% 0%, #06b6d433 0%, transparent 30%),
+    linear-gradient(160deg, #060913 0%, #0b152a 52%, #1f2f45 100%);
   color: var(--foreground);
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-geist-sans);
   min-height: 100vh;
 }
 
@@ -53,49 +39,21 @@ body {
   min-height: 100vh;
 }
 
-.glass-card {
-  background: var(--surface);
-  backdrop-filter: blur(18px);
-}
-
-.ledger {
-  font-family: var(--font-ledger), ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
-}
-
-.serif-display {
-  font-family: var(--font-serif-display), "Times New Roman", serif;
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 12px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.fade-up {
-  animation: fade-up 0.6s ease both;
-}
-
 .section-shell {
   margin: 0 auto;
   width: min(100% - 2rem, 72rem);
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .meta-card {
   display: grid;
   gap: 1.25rem;
-  border-radius: 1.5rem;
-  border: 1px solid #e2e8f0;
-  background: var(--surface);
+  border-radius: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.05);
+  backdrop-filter: blur(12px);
   padding: 1.5rem;
-  box-shadow: 0 20px 45px -40px rgba(15, 23, 42, 0.45);
+  box-shadow: 0 20px 45px -40px rgba(7, 11, 22, 0.7);
 }
 
 .eyebrow {
@@ -106,5 +64,5 @@ body {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #64748b;
+  color: #94a3b8;
 }
