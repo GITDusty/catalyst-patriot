@@ -73,8 +73,8 @@ export const BudgetDonut = ({
       aria-label="Budget category breakdown"
       role="img"
     >
-      <div className="h-72 w-full sm:h-80 md:h-96">
-        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+      <div className="h-72 w-full min-w-0 sm:h-80 md:h-96">
+        <ResponsiveContainer width="100%" height={320} minWidth={0} minHeight={0}>
           <PieChart>
             <Pie
               data={data}
