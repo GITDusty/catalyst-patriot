@@ -45,8 +45,8 @@ export const CategoryTable = ({
             <td className="px-3 py-2 font-medium text-slate-900">
               {item.name}
             </td>
-            <td className="px-3 py-2">{formatCurrency(item.value)}</td>
-            <td className="px-3 py-2">{formatPercent(percent)}</td>
+            <td className="ledger px-3 py-2">{formatCurrency(item.value)}</td>
+            <td className="ledger px-3 py-2">{formatPercent(percent)}</td>
           </tr>
         );
       })}
