@@ -7,6 +7,12 @@
 ```
 catalyst-patriot/
 ├── app/                    # Next.js App Router - all routes and layouts
+│   ├── components/        # Reusable UI components (charts, modals, tables)
+│   │   ├── charts/         # Recharts visualizations
+│   │   ├── modals/         # Radix dialogs and overlays
+│   │   └── tables/         # Accessible data tables
+│   ├── data/              # Budget data sources
+│   ├── utils/             # Formatting and helper utilities
 │   ├── layout.tsx         # Root layout component wrapping all pages
 │   ├── page.tsx           # Home page component (/ route)
 │   ├── globals.css        # Global styles and CSS variables
