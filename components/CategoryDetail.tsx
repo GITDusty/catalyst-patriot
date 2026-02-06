@@ -30,53 +30,16 @@ export function CategoryDetail({ category, population }: CategoryDetailProps) {
         </div>
       </div>
 
-      <div className="mt-5 rounded-lg border border-white/10 bg-slate-950/35 p-4">
-        <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-sm font-semibold text-white">Provenance</p>
-          <ProvenanceBadge
-            status={category.provenance.status}
-            document={category.provenance.document}
-            source={category.provenance.source}
-            url={category.provenance.url}
-            pageRef={category.provenance.pageRef}
-            notes={category.provenance.notes}
-          />
-        </div>
-        <dl className="space-y-2 text-sm">
-          <div className="flex items-center justify-between gap-3">
-            <dt className="text-gray-500">Source document</dt>
-            <dd className="text-right text-gray-200">{category.provenance.document}</dd>
-          </div>
-          <div className="flex items-center justify-between gap-3">
-            <dt className="text-gray-500">Source</dt>
-            <dd className="text-right text-gray-200">{category.provenance.source}</dd>
-          </div>
-          {category.provenance.pageRef ? (
-            <div className="flex items-center justify-between gap-3">
-              <dt className="text-gray-500">Page reference</dt>
-              <dd className="text-right text-gray-200">{category.provenance.pageRef}</dd>
-            </div>
-          ) : null}
-          {category.provenance.notes ? (
-            <div>
-              <dt className="text-gray-500">Notes</dt>
-              <dd className="mt-1 text-gray-200">{category.provenance.notes}</dd>
-            </div>
-          ) : null}
-        </dl>
-
-        {category.provenance.url ? (
-          <a
-            href={category.provenance.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex text-sm font-medium text-cyan-400 transition hover:text-cyan-300"
-          >
-            Open verified source
-          </a>
-        ) : (
-          <span className="mt-4 inline-flex text-sm text-gray-500">Open verified source (link pending)</span>
-        )}
+      <div className="mt-5">
+        <p className="text-sm font-semibold text-white mb-3">Provenance</p>
+        <ProvenanceBadge
+          status={category.provenance.status}
+          document={category.provenance.document}
+          source={category.provenance.source}
+          url={category.provenance.url}
+          pageRef={category.provenance.pageRef}
+          notes={category.provenance.notes}
+        />
       </div>
     </div>
   );

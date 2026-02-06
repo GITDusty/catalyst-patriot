@@ -4,6 +4,7 @@ export type BudgetCategory = {
   children?: BudgetCategory[];
   description?: string;
   source?: SourceMeta;
+  provenance?: Provenance;
 };
 
 export type BudgetMeta = {
@@ -19,7 +20,24 @@ export type SourceMeta = {
   description: string;
 };
 
+export type Provenance = {
+  sourceId?: string;
+  status: string;
+  document: string;
+  source: string;
+  url?: string;
+  pageRef?: string;
+};
+
+export type SourceEntry = {
+  id: string;
+  name: string;
+  type: string;
+  url: string;
+};
+
 export type BudgetData = {
   meta: BudgetMeta;
   categories: BudgetCategory[];
+  sources?: SourceEntry[];
 };

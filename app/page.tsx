@@ -1,71 +1,194 @@
-import { BudgetExplorer } from "./components/BudgetExplorer";
-import { SourceIndicator } from "./components/SourceIndicator";
-import { floridaBudget } from "./data/florida-budget";
-import { formatCurrency } from "./utils/formatting";
+import Link from "next/link";
+import { floridaBudget } from "../lib/data/florida";
+import { illinoisBudget } from "../lib/data/illinois";
 
 export default function Home() {
-  const { meta } = floridaBudget;
-
   return (
-    <main className="page-shell">
-      <section className="section-shell">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <p className="eyebrow">Florida FY 2024-25 Budget</p>
-            <h1 className="mt-4 text-4xl font-semibold text-slate-900 sm:text-5xl">
-              See how Florida allocates every dollar.
-            </h1>
-            <p className="mt-4 text-lg text-slate-600">
-              Explore the state budget by category, compare major priorities,
-              and tap any slice to drill into subcategory details.
-            </p>
-          </div>
-
-          <div className="meta-card">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Fiscal year
-              </p>
-              <p className="mt-2 text-lg font-semibold text-slate-900">
-                {meta.fiscalYear}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Total budget
-              </p>
-              <p className="mt-2 text-lg font-semibold text-slate-900">
-                <span className="inline-flex items-center">
-                  {formatCurrency(meta.totalBudget)}
-                  {meta.source ? (
-                    <SourceIndicator
-                      sourceUrl={meta.source.url}
-                      description={meta.source.description}
-                    />
-                  ) : null}
-                </span>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Data source
-              </p>
-              <p className="mt-2 text-sm text-slate-600">{meta.sourceLabel}</p>
-            </div>
-          </div>
+    <main className="page-shell min-h-screen text-white">
+      <section className="section-shell pt-16 pb-8">
+        <div className="text-center max-w-3xl mx-auto">
+          <p className="text-xs font-semibold tracking-widest text-cyan-400 uppercase">
+            Radical Sourcing · Catalyst Patriot
+            <span className="text-gray-600"> · A Catalyst USA Project</span>
+          </p>
+          <h1 className="mt-4 text-4xl font-bold text-white sm:text-5xl">
+            Civic Intelligence
+          </h1>
+          <p className="mt-4 text-lg text-gray-400">
+            Source-verified data on state budgets and national issues — built for citizens who want answers.
+          </p>
         </div>
       </section>
 
-      <BudgetExplorer />
+      <section className="section-shell py-8">
+        <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+          {/* Florida Card */}
+          <Link
+            href="/florida"
+            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-cyan-500/30 transition-all"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl">🌴</span>
+              <span className="text-xs font-semibold tracking-widest text-cyan-400 uppercase">
+                Florida
+              </span>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Fiscal Year</span>
+                <span className="text-gray-200">{floridaBudget.fiscalYear}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Total Budget</span>
+                <span className="text-gray-200">{floridaBudget.displayTotal}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Population</span>
+                <span className="text-gray-200">{floridaBudget.population.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Per Citizen</span>
+                <span className="text-gray-200">{floridaBudget.displayCostPerCitizen}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Categories</span>
+                <span className="text-gray-200">{floridaBudget.categoriesTracked} tracked</span>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center gap-2 text-cyan-400 group-hover:text-cyan-300 transition text-sm font-medium">
+              Explore <span aria-hidden="true">→</span>
+            </div>
+          </Link>
 
-      <section className="section-shell">
-        <div className="rounded-3xl border border-slate-200 bg-white/80 p-6 text-sm text-slate-600">
-          <p className="font-semibold text-slate-800">Attribution</p>
-          <p className="mt-2">
-            Budget figures reflect the Florida FY 2024-25 enacted plan. Data is
-            provided as a public summary for civic education and will be
-            updated with a verified source link.
+          {/* Illinois Card */}
+          <Link
+            href="/illinois"
+            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-cyan-500/30 transition-all"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl">🏛️</span>
+              <span className="text-xs font-semibold tracking-widest text-cyan-400 uppercase">
+                Illinois
+              </span>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Fiscal Year</span>
+                <span className="text-gray-200">{illinoisBudget.fiscalYear}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Total Budget</span>
+                <span className="text-gray-200">{illinoisBudget.displayTotal}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Population</span>
+                <span className="text-gray-200">{illinoisBudget.population.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Per Citizen</span>
+                <span className="text-gray-200">{illinoisBudget.displayCostPerCitizen}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Categories</span>
+                <span className="text-gray-200">{illinoisBudget.categoriesTracked} tracked</span>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center gap-2 text-cyan-400 group-hover:text-cyan-300 transition text-sm font-medium">
+              Explore <span aria-hidden="true">→</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* Compare Card */}
+        <div className="max-w-md mx-auto mt-8">
+          <Link
+            href="/compare"
+            className="group flex flex-col items-center bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-cyan-500/30 transition-all text-center"
+          >
+            <span className="text-3xl mb-3">⚖️</span>
+            <span className="text-lg font-semibold text-white">
+              Compare Florida vs Illinois
+            </span>
+            <span className="text-sm text-gray-400 mt-1">
+              Side-by-side budget analysis
+            </span>
+            <div className="mt-4 flex items-center gap-2 text-cyan-400 group-hover:text-cyan-300 transition text-sm font-medium">
+              Side-by-side <span aria-hidden="true">→</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* Coming Soon States */}
+        <p className="text-center text-gray-600 text-sm mt-8">
+          More states coming soon: Arizona, Texas, Missouri
+        </p>
+      </section>
+
+      {/* National Issues Section */}
+      <section className="section-shell py-8">
+        <div className="text-center mb-8">
+          <p className="text-xs font-semibold tracking-widest text-amber-500 uppercase">
+            National Issues
           </p>
+          <h2 className="mt-2 text-2xl font-bold text-white">
+            Beyond State Budgets
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+          {/* Social Security Card */}
+          <Link
+            href="/social-security"
+            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-amber-500/30 transition-all"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl">🏛️</span>
+              <span className="text-xs font-semibold tracking-widest text-amber-500 uppercase">
+                Social Security
+              </span>
+            </div>
+            <p className="text-gray-400 text-sm mb-3">
+              The program built for 222,000 now serves 72.9 million — and
+              it&apos;s running out of money. A source-verified deep dive.
+            </p>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Beneficiaries</span>
+                <span className="text-gray-200">72.9 million</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Worker Ratio</span>
+                <span className="text-gray-200">2.5:1</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Projected Insolvency</span>
+                <span className="text-red-400">2034</span>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center gap-2 text-amber-500 group-hover:text-amber-400 transition text-sm font-medium">
+              Explore <span aria-hidden="true">&rarr;</span>
+            </div>
+          </Link>
+
+          {/* Housing Coming Soon Card */}
+          <Link
+            href="/housing"
+            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-white/20 transition-all"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl">🏠</span>
+              <span className="text-xs font-semibold tracking-widest text-gray-500 uppercase">
+                Housing &middot; Coming Soon
+              </span>
+            </div>
+            <p className="text-gray-500 text-sm mb-3">
+              How much harder is it to buy a home today vs 30 years ago? A
+              data-driven look at the American Dream price tag.
+            </p>
+            <div className="mt-6 flex items-center gap-2 text-gray-500 group-hover:text-gray-400 transition text-sm font-medium">
+              Preview <span aria-hidden="true">&rarr;</span>
+            </div>
+          </Link>
         </div>
       </section>
     </main>
