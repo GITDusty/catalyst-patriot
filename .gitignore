@@ -5,3 +5,6 @@ node_modules
 # never commit deps/build
 node_modules/
 .next/
+
+node_modules/
+.next/
