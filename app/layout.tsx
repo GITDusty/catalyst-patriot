@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://catalystpatriot.com"),
+  manifest: "/manifest.webmanifest",
   title: {
     default: "Catalyst Patriot",
     template: "%s | Catalyst Patriot",
@@ -47,7 +48,10 @@ export const metadata: Metadata = {
     images: ["/brand/og-1200x630.png"],
   },
   icons: {
+    shortcut: "/favicon.ico",
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
       { url: "/brand/icons/icon-16.png", sizes: "16x16", type: "image/png" },
       { url: "/brand/icons/icon-32.png", sizes: "32x32", type: "image/png" },
       { url: "/brand/icons/icon-48.png", sizes: "48x48", type: "image/png" },
@@ -68,10 +72,9 @@ export const metadata: Metadata = {
         type: "image/png",
       },
     ],
-    shortcut: "/brand/icons/icon-32.png",
     apple: [
       {
-        url: "/brand/icons/apple-touch-icon-180.png",
+        url: "/apple-icon.png",
         sizes: "180x180",
         type: "image/png",
       },
