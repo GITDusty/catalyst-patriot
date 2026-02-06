@@ -1,3 +1,7 @@
 .next
 node_modules
 .env*.local
+
+# never commit deps/build
+node_modules/
+.next/
