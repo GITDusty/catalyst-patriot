@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -5,12 +6,19 @@ export default function Footer() {
     <footer className="border-t border-white/10 bg-black/30 backdrop-blur-sm">
       <div className="max-w-5xl mx-auto px-8 py-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
-          <div>
-            <p className="text-white font-bold text-lg">
+          <div className="space-y-3">
+            <Link href="/" className="inline-flex items-center" aria-label="Catalyst Patriot">
+              <Image
+                src="/brand/logo-horizontal-mono-light.png"
+                alt="Catalyst Patriot"
+                width={320}
+                height={56}
+                className="h-6 md:h-7 w-auto"
+              />
+            </Link>
+            <p className="text-white text-sm md:text-base">
               Catalyst Patriot{" "}
-              <span className="text-gray-500 font-normal text-sm">
-                &middot; A Catalyst USA Project
-              </span>
+              <span className="text-gray-500">&middot; A Catalyst USA Project</span>
             </p>
             <p className="text-gray-500 text-sm mt-1">
               Radical Sourcing &mdash; Source-verified civic intelligence

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 import Footer from "./components/Footer";
 import "./globals.css";
@@ -89,9 +90,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <nav className="flex items-center justify-between px-8 py-4 border-b border-white/10 bg-black/20 backdrop-blur-sm">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-cyan-400 font-bold text-lg">Catalyst Patriot</span>
-            <span className="text-gray-600 text-xs">by Catalyst USA</span>
+          <Link href="/" className="flex items-center py-1" aria-label="Catalyst Patriot">
+            <Image
+              src="/brand/logo-horizontal-mono-light.png"
+              alt="Catalyst Patriot"
+              width={320}
+              height={56}
+              priority
+              className="h-6 md:h-8 w-auto"
+            />
           </Link>
           <div className="flex gap-6 text-sm">
             <Link href="/florida" className="text-gray-400 hover:text-white transition">Florida</Link>
