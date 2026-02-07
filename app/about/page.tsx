@@ -136,8 +136,8 @@ export default function AboutPage() {
               </p>
               <h3 className="mb-4 text-2xl font-bold text-white">RADICAL TRANSPARENCY</h3>
               <p className="leading-relaxed text-gray-300">
-                Every number on this site links back to its source document. No aggregators. No "studies
-                say." No Wikipedia citations. If we can&apos;t trace it to an official government record, we
+                Every number on this site links back to its source document. No aggregators. No &quot;studies
+                say.&quot; No Wikipedia citations. If we can&apos;t trace it to an official government record, we
                 don&apos;t publish it.
               </p>
               <p className="mt-4 leading-relaxed text-gray-300">
