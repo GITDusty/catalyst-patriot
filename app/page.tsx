@@ -170,23 +170,37 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Housing Coming Soon Card */}
+          {/* Housing Card */}
           <Link
             href="/housing"
-            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-white/20 transition-all"
+            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-amber-500/30 transition-all"
           >
             <div className="flex items-center gap-3 mb-4">
               <span className="text-3xl">🏠</span>
-              <span className="text-xs font-semibold tracking-widest text-gray-500 uppercase">
-                Housing &middot; Coming Soon
+              <span className="text-xs font-semibold tracking-widest text-amber-500 uppercase">
+                Housing
               </span>
             </div>
-            <p className="text-gray-500 text-sm mb-3">
-              How much harder is it to buy a home today vs 30 years ago? A
-              data-driven look at the American Dream price tag.
+            <p className="text-gray-400 text-sm mb-3">
+              The cost of homeownership has drastically outpaced income
+              growth, pricing out millions of Americans.
             </p>
-            <div className="mt-6 flex items-center gap-2 text-gray-500 group-hover:text-gray-400 transition text-sm font-medium">
-              Preview <span aria-hidden="true">&rarr;</span>
+            <div className="space-y-2 my-4 text-sm">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Median Home Price</span>
+                <span className="text-white font-semibold">$417,000</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Price-to-Income Ratio</span>
+                <span className="text-amber-400 font-semibold">5.0x</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">1986 Ratio</span>
+                <span className="text-white font-semibold">3.7x</span>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center gap-2 text-amber-500 group-hover:text-amber-400 transition text-sm font-medium">
+              Explore <span aria-hidden="true">&rarr;</span>
             </div>
           </Link>
         </div>

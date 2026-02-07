@@ -13,9 +13,7 @@ type StateItem = {
 type PrimaryNavItem = {
   name: string;
   href: string;
-  activeClass: string;
-  inactiveClass: string;
-  hoverClass: string;
+  isAction?: boolean;
 };
 
 const stateItems: StateItem[] = [
@@ -27,49 +25,49 @@ const primaryNavItems: PrimaryNavItem[] = [
   {
     name: "Compare",
     href: "/compare",
-    activeClass: "text-white",
-    inactiveClass: "text-gray-300",
-    hoverClass: "hover:text-white",
-  },
-  {
-    name: "Social Security",
-    href: "/social-security",
-    activeClass: "text-amber-300",
-    inactiveClass: "text-amber-400",
-    hoverClass: "hover:text-amber-300",
-  },
-  {
-    name: "Housing",
-    href: "/housing",
-    activeClass: "text-amber-300 font-semibold",
-    inactiveClass: "text-amber-300",
-    hoverClass: "hover:text-amber-200",
   },
   {
     name: "About",
     href: "/about",
-    activeClass: "text-cyan-400 font-semibold",
-    inactiveClass: "text-white/80",
-    hoverClass: "hover:text-cyan-400",
+  },
+  {
+    name: "Social Security",
+    href: "/social-security",
+  },
+  {
+    name: "Housing",
+    href: "/housing",
   },
   {
     name: "Act Now",
     href: "/act",
-    activeClass: "text-emerald-300",
-    inactiveClass: "text-emerald-400",
-    hoverClass: "hover:text-emerald-300",
+    isAction: true,
   },
 ];
 
 function getNavClass(item: PrimaryNavItem, pathname: string) {
   const isActive = pathname === item.href;
-  return `${isActive ? item.activeClass : item.inactiveClass} ${item.hoverClass} transition whitespace-nowrap`;
+
+  if (item.isAction) {
+    return [
+      "whitespace-nowrap rounded-lg border px-4 py-2 font-semibold transition-all duration-200",
+      isActive
+        ? "border-amber-500/50 bg-amber-500/20 text-amber-400 font-bold"
+        : "border-amber-500/30 bg-amber-500/10 text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/20",
+    ].join(" ");
+  }
+
+  return [
+    "whitespace-nowrap transition-colors",
+    isActive ? "text-amber-400 font-bold" : "text-white/80 hover:text-white",
+  ].join(" ");
 }
 
 export default function NavLinks() {
   const pathname = usePathname();
   const [isDesktopOpen, setIsDesktopOpen] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileStatesOpen, setIsMobileStatesOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(0);
 
   const desktopDropdownRef = useRef<HTMLDivElement>(null);
@@ -77,14 +75,15 @@ export default function NavLinks() {
   const menuItemRefs = useRef<Array<HTMLAnchorElement | null>>([]);
 
   const isStateActive = useMemo(
-    () => stateItems.some((item) => pathname === item.href),
+    () => stateItems.some((item) => pathname.startsWith(item.href)),
     [pathname]
   );
 
   const totalMenuItems = stateItems.length + 1;
   const closeMenus = () => {
     setIsDesktopOpen(false);
-    setIsMobileOpen(false);
+    setIsMobileMenuOpen(false);
+    setIsMobileStatesOpen(false);
   };
 
   useEffect(() => {
@@ -220,7 +219,7 @@ export default function NavLinks() {
             aria-controls="states-dropdown-menu"
             className={`inline-flex items-center gap-1 transition ${
               isStateActive
-                ? "text-amber-300 font-semibold"
+                ? "text-amber-400 font-bold"
                 : "text-white/80 hover:text-amber-400"
             }`}
           >
@@ -290,90 +289,107 @@ export default function NavLinks() {
         </div>
 
         {primaryNavItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={closeMenus}
-            className={getNavClass(item, pathname)}
-          >
-            {item.name}
-          </Link>
+          <div key={item.href} className="flex items-center">
+            {item.href === "/social-security" ? (
+              <div className="mr-6 hidden h-4 w-px bg-white/20 md:block" />
+            ) : null}
+            <Link href={item.href} onClick={closeMenus} className={getNavClass(item, pathname)}>
+              {item.name}
+            </Link>
+          </div>
         ))}
       </div>
 
-      <div className="flex max-w-[62vw] flex-col items-end gap-1 text-xs md:hidden">
-        <div className="flex items-center gap-4 overflow-x-auto">
+      <div className="relative md:hidden">
+        <button
+          type="button"
+          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-nav-menu"
+          className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md border border-white/20 px-3 text-sm text-white/90 transition hover:border-white/40 hover:text-white"
+        >
+          Menu
+        </button>
+
+        {isMobileMenuOpen ? (
+          <div
+            id="mobile-nav-menu"
+            className="absolute right-0 top-full z-50 mt-2 w-72 rounded-lg border border-white/10 bg-slate-900/95 p-2 shadow-2xl backdrop-blur-md"
+          >
           <button
             type="button"
-            onClick={() => setIsMobileOpen((prev) => !prev)}
-            aria-expanded={isMobileOpen}
+            onClick={() => setIsMobileStatesOpen((prev) => !prev)}
+            aria-expanded={isMobileStatesOpen}
             aria-controls="mobile-states"
-            className={`inline-flex items-center gap-1 whitespace-nowrap transition ${
+            className={`flex min-h-11 w-full items-center justify-between rounded px-3 py-2 text-left transition ${
               isStateActive
-                ? "text-amber-300 font-semibold"
+                ? "text-amber-400 font-bold"
                 : "text-white/80 hover:text-amber-400"
             }`}
           >
-            States
+            <span>States</span>
             <span
               aria-hidden="true"
               className={`text-[10px] transition-transform ${
-                isMobileOpen ? "rotate-180" : "rotate-0"
+                isMobileStatesOpen ? "rotate-180" : "rotate-0"
               }`}
             >
               ▼
             </span>
           </button>
 
-          {primaryNavItems.map((item) => (
-            <Link
-              key={`${item.href}-mobile`}
-              href={item.href}
-              onClick={closeMenus}
-              className={getNavClass(item, pathname)}
+          {isMobileStatesOpen ? (
+            <div
+              id="mobile-states"
+              className="mt-1 w-full rounded-lg border border-white/10 bg-slate-900/90 p-2 backdrop-blur-md"
             >
-              {item.name}
-            </Link>
-          ))}
-        </div>
+              {stateItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={`${item.href}-mobile-state`}
+                    href={item.href}
+                    onClick={closeMenus}
+                    className={`flex min-h-11 items-center justify-between rounded px-3 py-2 transition ${
+                      isActive
+                        ? "bg-white/5 text-amber-400 font-bold"
+                        : "text-white/90 hover:bg-white/5 hover:text-amber-400"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span aria-hidden="true">{item.icon}</span>
+                      <span>{item.name}</span>
+                    </span>
+                    {isActive ? (
+                      <span aria-hidden="true" className="h-2 w-2 rounded-full bg-amber-400" />
+                    ) : null}
+                  </Link>
+                );
+              })}
+              <div className="my-2 border-t border-white/10" />
+              <Link
+                href="/act#waitlist"
+                onClick={closeMenus}
+                className="flex min-h-11 items-center gap-2 rounded px-3 py-2 text-cyan-300 transition hover:bg-white/5 hover:text-cyan-400"
+              >
+                <span aria-hidden="true">+</span>
+                <span>Request Your State</span>
+              </Link>
+            </div>
+          ) : null}
 
-        {isMobileOpen ? (
-          <div
-            id="mobile-states"
-            className="w-full rounded-lg border border-white/10 bg-slate-900/90 p-2 backdrop-blur-md"
-          >
-            {stateItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={`${item.href}-mobile-state`}
-                  href={item.href}
-                  onClick={closeMenus}
-                  className={`flex items-center justify-between rounded px-3 py-2 transition ${
-                    isActive
-                      ? "bg-white/5 text-amber-300"
-                      : "text-white/90 hover:bg-white/5 hover:text-amber-400"
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <span aria-hidden="true">{item.icon}</span>
-                    <span>{item.name}</span>
-                  </span>
-                  {isActive ? (
-                    <span aria-hidden="true" className="h-2 w-2 rounded-full bg-amber-400" />
-                  ) : null}
-                </Link>
-              );
-            })}
-            <div className="my-2 border-t border-white/10" />
-            <Link
-              href="/act#waitlist"
-              onClick={closeMenus}
-              className="flex items-center gap-2 rounded px-3 py-2 text-cyan-300 transition hover:bg-white/5 hover:text-cyan-400"
-            >
-              <span aria-hidden="true">+</span>
-              <span>Request Your State</span>
-            </Link>
+          <div className="mt-1 flex flex-col gap-1 text-sm">
+            {primaryNavItems.map((item) => (
+              <Link
+                key={`${item.href}-mobile`}
+                href={item.href}
+                onClick={closeMenus}
+                className={`flex min-h-11 items-center rounded px-3 py-2 ${getNavClass(item, pathname)}`}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
           </div>
         ) : null}
       </div>
