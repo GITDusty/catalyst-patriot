@@ -36,7 +36,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="/housing"
-                className="block text-cyan-400 transition hover:text-cyan-300"
+                className="block text-gray-300 transition hover:text-amber-300"
               >
                 → Housing
               </Link>
