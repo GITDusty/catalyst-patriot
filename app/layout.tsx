@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "./components/Footer";
+import NavLinks from "./components/NavLinks";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -103,13 +104,7 @@ export default function RootLayout({
               className="h-6 md:h-8 w-auto"
             />
           </Link>
-          <div className="flex gap-6 text-sm">
-            <Link href="/florida" className="text-gray-400 hover:text-white transition">Florida</Link>
-            <Link href="/illinois" className="text-gray-400 hover:text-white transition">Illinois</Link>
-            <Link href="/compare" className="text-gray-400 hover:text-white transition">Compare</Link>
-            <Link href="/social-security" className="text-amber-400 hover:text-amber-300 transition">Social Security</Link>
-            <Link href="/act" className="text-emerald-400 hover:text-emerald-300 transition">Act Now</Link>
-          </div>
+          <NavLinks />
         </nav>
         {children}
         <Footer />
