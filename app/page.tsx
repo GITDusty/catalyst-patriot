@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { floridaBudget } from "../lib/data/florida";
-import { illinoisBudget } from "../lib/data/illinois";
+import StateCarousel from "./components/StateCarousel";
+import { availableStates } from "./data/states";
 
 export default function Home() {
   return (
@@ -20,108 +20,44 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-shell py-8">
-        <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-          {/* Florida Card */}
-          <Link
-            href="/florida"
-            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-cyan-500/30 transition-all"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl">🌴</span>
-              <span className="text-xs font-semibold tracking-widest text-cyan-400 uppercase">
-                Florida
-              </span>
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Fiscal Year</span>
-                <span className="text-gray-200">{floridaBudget.fiscalYear}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Total Budget</span>
-                <span className="text-gray-200">{floridaBudget.displayTotal}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Population</span>
-                <span className="text-gray-200">{floridaBudget.population.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Per Citizen</span>
-                <span className="text-gray-200">{floridaBudget.displayCostPerCitizen}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Categories</span>
-                <span className="text-gray-200">{floridaBudget.categoriesTracked} tracked</span>
-              </div>
-            </div>
-            <div className="mt-6 flex items-center gap-2 text-cyan-400 group-hover:text-cyan-300 transition text-sm font-medium">
-              Explore <span aria-hidden="true">→</span>
-            </div>
-          </Link>
+      <section className="section-shell py-16">
+        <div className="mx-auto max-w-5xl">
+          <p className="mb-4 text-center text-sm font-semibold tracking-widest text-cyan-400 uppercase">
+            State Budgets
+          </p>
+          <h2 className="text-center text-4xl font-bold text-white md:text-5xl">
+            State Budget Intelligence
+          </h2>
+          <p className="mx-auto mt-4 mb-12 max-w-3xl text-center text-xl text-gray-400">
+            Source-verified budget data. Choose your state.
+          </p>
 
-          {/* Illinois Card */}
-          <Link
-            href="/illinois"
-            className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-cyan-500/30 transition-all"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl">🏛️</span>
-              <span className="text-xs font-semibold tracking-widest text-cyan-400 uppercase">
-                Illinois
-              </span>
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Fiscal Year</span>
-                <span className="text-gray-200">{illinoisBudget.fiscalYear}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Total Budget</span>
-                <span className="text-gray-200">{illinoisBudget.displayTotal}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Population</span>
-                <span className="text-gray-200">{illinoisBudget.population.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Per Citizen</span>
-                <span className="text-gray-200">{illinoisBudget.displayCostPerCitizen}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Categories</span>
-                <span className="text-gray-200">{illinoisBudget.categoriesTracked} tracked</span>
-              </div>
-            </div>
-            <div className="mt-6 flex items-center gap-2 text-cyan-400 group-hover:text-cyan-300 transition text-sm font-medium">
-              Explore <span aria-hidden="true">→</span>
-            </div>
-          </Link>
+          <StateCarousel states={availableStates} />
+
+          <p className="mt-8 text-center text-sm text-gray-500">
+            More states coming soon: Arizona, Texas, Missouri
+          </p>
         </div>
+      </section>
 
-        {/* Compare Card */}
-        <div className="max-w-md mx-auto mt-8">
+      <section className="section-shell py-8">
+        <div className="mx-auto mt-2 max-w-2xl">
           <Link
             href="/compare"
             className="group flex flex-col items-center bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-cyan-500/30 transition-all text-center"
           >
             <span className="text-3xl mb-3">⚖️</span>
             <span className="text-lg font-semibold text-white">
-              Compare Florida vs Illinois
+              Compare States Side-by-Side
             </span>
             <span className="text-sm text-gray-400 mt-1">
-              Side-by-side budget analysis
+              Side-by-side budget analysis across states
             </span>
             <div className="mt-4 flex items-center gap-2 text-cyan-400 group-hover:text-cyan-300 transition text-sm font-medium">
               Side-by-side <span aria-hidden="true">→</span>
             </div>
           </Link>
         </div>
-
-        {/* Coming Soon States */}
-        <p className="text-center text-gray-600 text-sm mt-8">
-          More states coming soon: Arizona, Texas, Missouri
-        </p>
       </section>
 
       {/* National Issues Section */}
