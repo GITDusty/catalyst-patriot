@@ -3,7 +3,7 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import type { BudgetCategory } from "../lib/data/types";
-import { formatCompactCurrency } from "../lib/data/formatting";
+import { formatCompactCurrency, formatWholeCurrency } from "../lib/data/formatting";
 
 type BudgetDonutChartProps = {
   categories: BudgetCategory[];
@@ -35,8 +35,9 @@ function DonutTooltip({ active, payload }: DonutTooltipProps) {
   return (
     <div className="rounded-lg border border-white/10 bg-slate-950/90 px-3 py-2 text-xs shadow-lg backdrop-blur">
       <p className="text-sm font-semibold text-white">{category.name}</p>
-      <p className="mt-1 text-gray-300">{formatCompactCurrency(category.amount)}</p>
-      <p className="text-gray-400">{category.percentage.toFixed(1)}% of total</p>
+      <p className="mt-1 text-gray-300">
+        {formatWholeCurrency(category.amount)} ({category.percentage.toFixed(1)}%)
+      </p>
     </div>
   );
 }
@@ -78,18 +79,21 @@ export function BudgetDonutChart({
               {categories.map((item, index) => {
                 const isMuted =
                   activeIndex >= 0 && index !== activeIndex && activeCategoryName;
+                const isActive = activeIndex >= 0 && index === activeIndex;
 
                 return (
                   <Cell
                     key={item.name}
                     fill={item.color}
                     opacity={isMuted ? 0.35 : 1}
-                    stroke="none"
+                    stroke={isActive ? "#22d3ee" : "none"}
+                    strokeWidth={isActive ? 2 : 0}
+                    className="transition-all duration-300"
                   />
                 );
               })}
             </Pie>
-            <Tooltip trigger="click" content={<DonutTooltip />} />
+            <Tooltip content={<DonutTooltip />} />
           </PieChart>
         </ResponsiveContainer>
 

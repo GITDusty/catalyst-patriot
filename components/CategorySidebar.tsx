@@ -27,7 +27,7 @@ export function CategorySidebar({
               onClick={() => onSelectCategory(category)}
               className={`w-full rounded-lg border p-3 text-left transition-all duration-300 ${
                 isActive
-                  ? "border-cyan-500 bg-cyan-500/10 shadow-[inset_3px_0_0_0_rgba(6,182,212,1)]"
+                  ? "border-cyan-500 border-l-4 border-l-cyan-400 bg-cyan-500/10"
                   : "border-white/10 bg-slate-950/40 hover:border-cyan-500/40 hover:bg-slate-900/70"
               }`}
             >

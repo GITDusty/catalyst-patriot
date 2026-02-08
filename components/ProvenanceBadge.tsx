@@ -47,7 +47,7 @@ export const ProvenanceBadge = ({
   const style = STATUS_STYLES[status];
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+    <div className="provenance-badge rounded-lg border border-white/10 bg-white/5 p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
         <span
           className={`inline-flex items-center gap-2 rounded-full border px-2 py-1 text-xs font-medium ${style.accentText} ${style.accentBg} ${style.accentBorder}`}

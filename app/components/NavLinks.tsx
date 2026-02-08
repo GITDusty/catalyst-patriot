@@ -19,6 +19,8 @@ type PrimaryNavItem = {
 const stateItems: StateItem[] = [
   { name: "Florida", href: "/florida", icon: "🌴" },
   { name: "Illinois", href: "/illinois", icon: "🏛️" },
+  { name: "Arizona", href: "/arizona", icon: "🌵" },
+  { name: "Texas", href: "/texas", icon: "🤠" },
 ];
 
 const primaryNavItems: PrimaryNavItem[] = [

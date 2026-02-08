@@ -34,9 +34,7 @@ export default function Home() {
 
           <StateCarousel states={availableStates} />
 
-          <p className="mt-8 text-center text-sm text-gray-500">
-            More states coming soon: Arizona, Texas, Missouri
-          </p>
+          <p className="mt-8 text-center text-sm text-gray-500">More states coming soon: Missouri</p>
         </div>
       </section>
 
