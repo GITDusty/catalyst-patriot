@@ -25,6 +25,10 @@ const stateItems: StateItem[] = [
 
 const primaryNavItems: PrimaryNavItem[] = [
   {
+    name: "Voter Stats",
+    href: "/voter-stats",
+  },
+  {
     name: "Compare",
     href: "/compare",
   },

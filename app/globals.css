@@ -21,8 +21,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans, "Segoe UI", system-ui, sans-serif);
+  --font-mono: var(--font-geist-mono, "SFMono-Regular", ui-monospace, monospace);
 }
 
 body {
@@ -31,7 +31,7 @@ body {
     radial-gradient(circle at 85% 0%, #06b6d433 0%, transparent 30%),
     linear-gradient(160deg, #060913 0%, #0b152a 52%, #1f2f45 100%);
   color: var(--foreground);
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-geist-sans, "Segoe UI", system-ui, sans-serif);
   min-height: 100vh;
 }
 
