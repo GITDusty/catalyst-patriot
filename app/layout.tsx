@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "./components/Footer";
+import DebtKonamiEasterEgg from "./components/DebtKonamiEasterEgg";
+import DebtTrackerEasterEgg from "./components/DebtTrackerEasterEgg";
+import LogoRapidTapEasterEgg from "./components/LogoRapidTapEasterEgg";
 import NavLinks from "./components/NavLinks";
 import "./globals.css";
 
@@ -81,7 +86,12 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <nav className="flex items-center justify-between px-8 py-4 border-b border-white/10 bg-black/20 backdrop-blur-sm">
-          <Link href="/" className="flex items-center py-1" aria-label="Catalyst Patriot">
+          <Link
+            href="/"
+            className="flex items-center py-1"
+            aria-label="Catalyst Patriot"
+            data-secret-logo="true"
+          >
             <Image
               src="/brand/logo-horizontal-mono-light.png"
               alt="Catalyst Patriot"
@@ -95,6 +105,11 @@ export default function RootLayout({
         </nav>
         {children}
         <Footer />
+        <DebtTrackerEasterEgg />
+        <DebtKonamiEasterEgg />
+        <LogoRapidTapEasterEgg />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

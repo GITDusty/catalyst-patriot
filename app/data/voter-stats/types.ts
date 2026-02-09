@@ -96,3 +96,23 @@ export type ApiError = {
     message: string;
   };
 };
+
+export type FloridaRegistrationTrendPoint = {
+  date: string;
+  republican: number;
+  democratic: number;
+  npa: number;
+  minor: number;
+};
+
+export type FloridaRegistrationTrendPointWithTotal =
+  FloridaRegistrationTrendPoint & {
+    total: number;
+  };
+
+export type FloridaRegistrationTrendMeta = {
+  status: "seeded-demo" | "official";
+  label: string;
+  asOfLabel: string;
+  note: string;
+};

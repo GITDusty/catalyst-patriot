@@ -6,6 +6,14 @@ import {
   buildFloridaCompositionData,
 } from "@/app/data/voter-stats/florida";
 import {
+  floridaRegistrationTrendMeta,
+  floridaRegistrationTrendWithTotals,
+  getFloridaTrendDeltaChips,
+  mapFloridaTrendFullComposition,
+  mapFloridaTrendTwoParty,
+} from "@/app/data/voter-stats/florida-trend";
+import type { FloridaTrendViewMode } from "@/app/data/voter-stats/florida-trend";
+import {
   buildNationalChartData,
   getNationalRows,
 } from "@/app/data/voter-stats/national";
@@ -17,6 +25,7 @@ import type {
 } from "@/app/data/voter-stats/types";
 import CountyExplorer from "./CountyExplorer";
 import FloridaCompositionChart from "./FloridaCompositionChart";
+import FloridaRegistrationTrendChart from "./FloridaRegistrationTrendChart";
 import LoadingSkeleton from "./LoadingSkeleton";
 import MethodologyPanel from "./MethodologyPanel";
 import NationalDemographicChart from "./NationalDemographicChart";
@@ -54,6 +63,8 @@ export default function VoterStatsDashboard() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [twoPartyView, setTwoPartyView] = useState(false);
+  const [trendTwoPartyView, setTrendTwoPartyView] = useState(false);
+  const [trendViewMode, setTrendViewMode] = useState<FloridaTrendViewMode>("absolute");
   const [includeIndependent, setIncludeIndependent] = useState(true);
   const [dimension, setDimension] = useState<NationalDemographicDimension>("gender");
 
@@ -122,6 +133,22 @@ export default function VoterStatsDashboard() {
   const nationalChartData = useMemo(
     () => buildNationalChartData(nationalRows, includeIndependent),
     [includeIndependent, nationalRows]
+  );
+  const trendChartData = useMemo(() => {
+    if (trendTwoPartyView) {
+      return mapFloridaTrendTwoParty(floridaRegistrationTrendWithTotals);
+    }
+
+    return mapFloridaTrendFullComposition(floridaRegistrationTrendWithTotals);
+  }, [trendTwoPartyView]);
+
+  const trendDeltaChips = useMemo(
+    () =>
+      getFloridaTrendDeltaChips(floridaRegistrationTrendWithTotals, {
+        mode: trendViewMode,
+        twoPartyView: trendTwoPartyView,
+      }),
+    [trendTwoPartyView, trendViewMode]
   );
 
   if (isLoading) {
@@ -230,6 +257,94 @@ export default function VoterStatsDashboard() {
       </section>
 
       <section className="rounded-3xl border border-slate-300 bg-white/85 p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950/60">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-950 dark:text-slate-50">
+              Registration trend over time
+            </h3>
+            <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
+              Trends make shifts visible. This chart is time-based; composition above is a snapshot.
+            </p>
+          </div>
+
+          <span className="inline-flex rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+            {floridaRegistrationTrendMeta.status === "seeded-demo"
+              ? "Seeded series (demo)"
+              : "Official series"}
+          </span>
+        </div>
+
+        <div className="mt-4 grid gap-2 sm:grid-cols-3">
+          {trendDeltaChips.map((chip) => {
+            const isPositive = chip.delta >= 0;
+            const accentClass =
+              chip.key === "republican"
+                ? "border-[#1f3a5f]/30 bg-[#1f3a5f]/10 text-[#1f3a5f] dark:text-[#9ab0d0]"
+                : chip.key === "democratic"
+                  ? "border-[#5f7ea6]/30 bg-[#5f7ea6]/10 text-[#355980] dark:text-[#a7bddb]"
+                  : chip.key === "npa"
+                    ? "border-[#96a9c4]/30 bg-[#96a9c4]/10 text-[#3f5677] dark:text-[#bed0e6]"
+                    : "border-[#c05b67]/30 bg-[#c05b67]/10 text-[#7d2f38] dark:text-[#f0b2ba]";
+            const isPositivePercent = chip.percentChange >= 0;
+            const formattedLine =
+              trendViewMode === "share"
+                ? `${isPositive ? "+" : ""}${chip.delta.toFixed(1)} pp`
+                : trendViewMode === "indexed"
+                  ? `${chip.startValue.toFixed(1)} -> ${chip.endValue.toFixed(1)} (${isPositivePercent ? "+" : ""}${chip.percentChange.toFixed(1)}%)`
+                  : `${isPositive ? "+" : ""}${new Intl.NumberFormat("en-US").format(Math.round(chip.delta))} (${isPositivePercent ? "+" : ""}${chip.percentChange.toFixed(1)}%)`;
+
+            return (
+              <div
+                key={chip.key}
+                className={`rounded-xl border px-3 py-2 text-xs ${accentClass}`}
+              >
+                <p className="font-semibold">{chip.label}</p>
+                <p className="mt-1">{formattedLine}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setTrendTwoPartyView(false)}
+            className={`rounded-lg border px-3 py-2 text-xs font-semibold transition ${
+              trendTwoPartyView
+                ? "border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-900"
+                : "border-[#1f3a5f] bg-[#1f3a5f] text-white"
+            }`}
+          >
+            Full composition
+          </button>
+          <button
+            type="button"
+            onClick={() => setTrendTwoPartyView(true)}
+            className={`rounded-lg border px-3 py-2 text-xs font-semibold transition ${
+              trendTwoPartyView
+                ? "border-[#1f3a5f] bg-[#1f3a5f] text-white"
+                : "border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-900"
+            }`}
+          >
+            2-party view
+          </button>
+          <span className="text-xs text-slate-600 dark:text-slate-400">
+            {floridaRegistrationTrendMeta.asOfLabel}
+          </span>
+        </div>
+
+        <div className="mt-4">
+          <FloridaRegistrationTrendChart
+            data={trendChartData}
+            asOfLabel={floridaRegistrationTrendMeta.asOfLabel}
+            twoPartyView={trendTwoPartyView}
+            viewMode={trendViewMode}
+            onViewModeChange={setTrendViewMode}
+          />
+        </div>
+      </section>
+
+      <section className="rounded-3xl border border-slate-300 bg-white/85 p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950/60">
         <h3 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Florida county explorer</h3>
         <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
           Sort by party counts, total registration, or party share. Defaults to top 10 counties by total registered
@@ -296,7 +411,11 @@ export default function VoterStatsDashboard() {
 
       <MethodologyPanel
         sources={methodologySources}
-        notes={[...dashboard.florida.notes, ...dashboard.national.methodNotes]}
+        notes={[
+          ...dashboard.florida.notes,
+          floridaRegistrationTrendMeta.note,
+          ...dashboard.national.methodNotes,
+        ]}
       />
     </div>
   );
